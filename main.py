@@ -114,20 +114,24 @@ class CatGAN():
             if num_epochs == 1 or epoch % 20 == 0:
                 self.save_generated_images(epoch, generator)        
 
-def load_cats():
-    cats = np.load("./cats.npy")
-    Y = []
-    for i in range(cats.shape[0]):
-        Y.append([1,0])
-    Y = np.array(Y)
+    def load_cats(self):
+        try:
+            cats = np.load("./cats.npy")
 
-    (x_train, y_train, x_test, y_test) = train_test_split(cats, Y)
-    x_train = (x_train.astype(np.float32)) / 255
-    x_train = x_train.reshape(x_train.shape[0], 784)
+            Y = []
+            for i in range(cats.shape[0]):
+                Y.append([1,0])
+            Y = np.array(Y)
 
-    return (x_train, y_train, x_test, y_test)    
+            (x_train, y_train, x_test, y_test) = train_test_split(cats, Y)
+            x_train = (x_train.astype(np.float32)) / 255
+            x_train = x_train.reshape(x_train.shape[0], 784)
+
+            return (x_train, y_train, x_test, y_test)  
+          
+        except Exception as e:
+            print (e)            
 
 catgan = CatGAN(lr=0.0002, beta=0.5, summaries=False)
-(x_train, y_train, x_test, y_test) = load_cats()
+(x_train, y_train, x_test, y_test) = catgan.load_cats()
 catgan.train_gan(x_train, 200, 256)
-
