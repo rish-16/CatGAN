@@ -100,7 +100,7 @@ class CatGAN():
                 X_discriminator = np.concatenate([image_batch, generated_images])
 
                 y_discriminator = np.zeros(2 * batch_size)
-                y_discriminator[:batch_size] = 0.95
+                y_discriminator[:batch_size] = 0.90
 
                 discriminator.trainable = True
                 discriminator.train_on_batch(X_discriminator, y_discriminator)
